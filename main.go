@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"myTestGo/exception"
-	"myTestGo/postmantomd"
+	"myTestGo/tonghuashun"
 	_ "net/http/pprof"
 	"runtime"
 	"time"
@@ -49,7 +49,7 @@ func main() {
 	//img.ImageDraw()
 
 	// 生成postman markdown
-	err = postmantomd.PostManJSONToMarddown("/Users/zhangxinjie/Downloads/商机2.0.postman_collection.json","/Users/zhangxinjie/Downloads/clubcenter_2.0.md")
+	//err = postmantomd.PostManJSONToMarddown("/Users/zhangxinjie/Downloads/商机2.0.postman_collection.json","/Users/zhangxinjie/Downloads/clubcenter_2.0.md")
 	//err = postmantomd.PostManJSONToMarddown("/Users/zhangxinjie/Downloads/通讯录card_center.postman_collection.json","/Users/zhangxinjie/Downloads/cardcenter-2020.md")
 	if err != nil {
 		exception.ToError(err)
@@ -58,6 +58,7 @@ func main() {
 	// 读取excel
 	//parse_excel.ReadExcel("/Users/zhangxinjie/Documents/企业微信/WXWork Files/File/2019-12/user_card的副本.xlsx","user_card")
 
+	tonghuashun.LessId()
 }
 
 
