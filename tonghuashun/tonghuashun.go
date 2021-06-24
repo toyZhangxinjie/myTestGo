@@ -18,13 +18,22 @@ func readExcel(path, sheet string) ([][]string, error) {
 	return f.GetRows(sheet), nil
 }
 
+var ths = map[string]string{
+	"同花顺提供中国宏观数据部分": "cn_macro_index_basic_info",
+	"同花顺提供行业经济数据部分": "industry_eco_index_basic_info",
+	"同花顺提供海外宏观数据部分": "global_macro_index_basic_info",
+	"同花顺提供补充数据汇总":   "global_macro_index_basic_info",
+}
+// 对比文件sheet
+const compare = "同花顺提供补充数据汇总"
 func LessId() {
-	excel, err := readExcel("/Users/zhangxinjie/Downloads/有色网同花顺互换数据汇总-更新20210205.xlsx", "同花顺提供补充数据汇总")
+
+	excel, err := readExcel("/Users/zhangxinjie/Downloads/有色网同花顺互换数据汇总-更新20210205.xlsx", compare)
 	if err != nil {
 		fmt.Errorf(err.Error())
 		return
 	}
-	db, err := readExcel("/Users/zhangxinjie/Downloads/cn_macro_index_basic_info.xlsx", "cn_macro_index_basic_info")
+	db, err := readExcel("/Users/zhangxinjie/Downloads/"+ths[compare]+".xlsx", ths[compare])
 	if err != nil {
 		fmt.Errorf(err.Error())
 		return
@@ -39,7 +48,7 @@ func LessId() {
 		nameexist := false
 		idcel := strings.Trim(excelitem[4], " ")
 		namecel := strings.Trim(excelitem[5], " ")
-		id := "S"
+		id := ""
 		for i := 0; i < 9-len(idcel); i++ {
 			id += "0"
 		}
@@ -50,10 +59,15 @@ func LessId() {
 			}
 			indicatorId := strings.Trim(dbitem[3], " ")
 			indicatorName := strings.Trim(dbitem[4], " ")
-			if id == indicatorId {
+			idPrefix := indicatorId[0:1]
+			namePrefix := ""
+			if strings.HasPrefix(indicatorName, "(停)") {
+				namePrefix = "(停)"
+			}
+			if idPrefix+id == indicatorId {
 				idexist = true
 			}
-			if indicatorName == namecel {
+			if indicatorName == namePrefix+namecel {
 				nameexist = true
 			}
 		}
@@ -80,6 +94,6 @@ func LessId() {
 		}
 	}
 	b, _ := file.WriteToBuffer()
-	ioutil.WriteFile("/Users/zhangxinjie/Downloads/补充数据-中国宏观数据.xlsx", b.Bytes(), os.ModePerm)
+	ioutil.WriteFile("/Users/zhangxinjie/Downloads/"+compare+"对比"+ths[compare]+".xlsx", b.Bytes(), os.ModePerm)
 	//println("count length=", count)
 }

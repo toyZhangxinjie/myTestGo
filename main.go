@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"myTestGo/exception"
-	"myTestGo/tonghuashun"
 	_ "net/http/pprof"
 	"runtime"
 	"time"
@@ -58,7 +57,8 @@ func main() {
 	// 读取excel
 	//parse_excel.ReadExcel("/Users/zhangxinjie/Documents/企业微信/WXWork Files/File/2019-12/user_card的副本.xlsx","user_card")
 
-	tonghuashun.LessId()
+	//tonghuashun.LessId()
+
 }
 
 
