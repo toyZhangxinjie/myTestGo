@@ -1,6 +1,7 @@
 package util
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/mozillazg/go-pinyin"
 	"math/rand"
@@ -20,6 +21,13 @@ func NewRequestOptions() *grequests.RequestOptions {
 		InsecureSkipVerify:  true,
 	}
 }
+
+type HttpResponse struct {
+	Code int              `json:"code"`
+	Msg  string           `json:"msg"`
+	Data *json.RawMessage `json:"data"`
+}
+
 func HttpPostCall(url string, params map[string]string, res interface{}) error {
 	op := NewRequestOptions()
 	op.Data = params
@@ -68,7 +76,7 @@ func GetRandNum(begin, end int) int {
 		begin = end
 		end = temp
 	}
-	return r.Intn(end - begin) + begin
+	return r.Intn(end-begin) + begin
 }
 
 func IntSliceToStr(slice []int, sep string) string {
@@ -100,7 +108,7 @@ func ToPinYin(str string) string {
 	py := pinyin.Pinyin(str, pinyin.NewArgs())
 	res := ""
 	for _, i := range py {
-		res += strings.Join(i,"")
+		res += strings.Join(i, "")
 	}
 	return res
 }
