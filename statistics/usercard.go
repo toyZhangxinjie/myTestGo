@@ -199,7 +199,7 @@ func getShareSelf(begin, end int64, userIds []int64) (map[int64]int, error) {
 		params = append(params, begin)
 	}
 	if end > 0 {
-		sql += " AND create_time >= ? "
+		sql += " AND create_time <= ? "
 		params = append(params, end)
 	}
 	sql += " GROUP BY master_user_id"
@@ -238,7 +238,7 @@ func getSubmitCard(begin, end int64, userIds []int64) (map[int64]int, error) {
 		params = append(params, begin)
 	}
 	if end > 0 {
-		sql += " AND create_time >= ? "
+		sql += " AND create_time <= ? "
 		params = append(params, end)
 	}
 	sql += " GROUP BY master_user_id"
@@ -277,7 +277,7 @@ func getFriends(begin, end int64, userIds []int64) (map[int64]int, error) {
 		params = append(params, begin)
 	}
 	if end > 0 {
-		sql += " AND add_time >= ? "
+		sql += " AND add_time <= ? "
 		params = append(params, end)
 	}
 	sql += " GROUP BY user_master"
@@ -315,7 +315,7 @@ func getLookMe(begin, end int64, cardIds []int64) (map[int64]int, error) {
 		params = append(params, begin)
 	}
 	if end > 0 {
-		sql += " AND look_time >= ? "
+		sql += " AND look_time <= ? "
 		params = append(params, end)
 	}
 	sql += " GROUP BY seen_card_id"
