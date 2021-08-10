@@ -21,7 +21,7 @@ const (
 	user   = ""
 	pwd    = ""
 	ip     = ""
-	port   = 63617
+	port   = 3306
 	dbName = ""
 )
 
@@ -119,21 +119,22 @@ func main() {
 	for _, cardid := range cardIds {
 		cardIdList = append(cardIdList, cardid)
 	}
-	now := time.Now().In(time.Local)
-	begin := time.Date(now.Year(),1,1,0,0,0,0,time.Local)
-	shareSelfTotal, err := getShareSelf(begin.Unix(),0,userIds)
+	begin := time.Date(2021,8,2,0,0,0,0,time.Local)
+	end := time.Date(2021,8,8,23,59,59,0,time.Local)
+	dateStr := begin.Format("01/02") + "-" + end.Format("01/02")
+	shareSelfTotal, err := getShareSelf(begin.Unix(),end.Unix(),userIds)
 	if err != nil {
 		panic(err.Error())
 	}
-	submitTotal, err := getSubmitCard(begin.Unix(), 0,userIds)
+	submitTotal, err := getSubmitCard(begin.Unix(),end.Unix(),userIds)
 	if err != nil {
 		panic(err.Error())
 	}
-	friendTotal, err := getFriends(begin.Unix(),0,userIds)
+	friendTotal, err := getFriends(begin.Unix(),end.Unix(),userIds)
 	if err != nil {
 		panic(err.Error())
 	}
-	lookMeTotal, err := getLookMe(begin.Unix(),0,cardIdList)
+	lookMeTotal, err := getLookMe(begin.Unix(),end.Unix(),cardIdList)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -143,7 +144,7 @@ func main() {
 	file.SetActiveSheet(file.NewSheet(sheetname))
 
 	title := []string{
-		"姓名","手机号","用户ID","名片ID","今年至今分享名片","今年至今递名片","今年至今新增好友数","今年至今名片被看数",
+		"姓名","手机号","用户ID","名片ID",dateStr+"分享名片",dateStr+"递名片",dateStr+"新增好友数",dateStr+"名片被看数",
 	}
 	for i, s := range title {
 		file.SetCellValue(sheetname,excelize.ToAlphaString(i)+"1", s)
